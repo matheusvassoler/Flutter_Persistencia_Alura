@@ -58,9 +58,8 @@ class ContactDao {
 //  });
   }
 
-  void delete(int id) async {
+  Future<void> delete(int id) async {
     final Database db = await getDatabase();
-
     db.delete(
       _tableName,
       where: "id = ?",
@@ -70,6 +69,7 @@ class ContactDao {
 
   List<Contact> _toList(List<Map<String, dynamic>> result) {
     final List<Contact> contacts = [];
+    Future.delayed(Duration(microseconds: 10000));
 
     for (Map<String, dynamic> row in result) {
       final Contact contact = Contact(

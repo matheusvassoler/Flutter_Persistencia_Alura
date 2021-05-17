@@ -40,12 +40,20 @@ class _ContactsListState extends State<ContactsList> {
             case ConnectionState.done:
               final List<Contact> contacts = snapshot.data;
               return ListView.builder(
-                itemBuilder: (context, index) {
-                  final contact = contacts[index];
-                  return _ContactItem(contact);
-                },
                 itemCount: contacts.length,
+                itemBuilder: (context, index) {
+                  debugPrint(index.toString());
+                  return Dismissible(
+                    key: UniqueKey(),
+                    child: _ContactItem(contacts[index]),
+                    onDismissed: (DismissDirection direction) async {
+                      await _dao.delete(contacts[index].id);
+                      setState(() {});
+                    },
+                  );
+                },
               );
+
               break;
           }
 
