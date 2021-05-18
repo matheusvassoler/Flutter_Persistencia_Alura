@@ -45,7 +45,36 @@ class _ContactsListState extends State<ContactsList> {
                   debugPrint(index.toString());
                   return Dismissible(
                     key: UniqueKey(),
-                    child: _ContactItem(contacts[index]),
+                    //child: _ContactItem(contacts[index]),
+                    child: Material(
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => ContactForm(contacts[index]),
+                            ),
+                          ).then((value) => {
+                            setState(() {}),
+                          });
+                        },
+                        child: Card(
+                          child: ListTile(
+                            title: Text(
+                              contacts[index].name,
+                              style: TextStyle(
+                                fontSize: 24.0,
+                              ),
+                            ),
+                            subtitle: Text(
+                              contacts[index].accountNumber.toString(),
+                              style: TextStyle(
+                                fontSize: 16.0,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                     onDismissed: (DismissDirection direction) async {
                       await _dao.delete(contacts[index].id);
                       setState(() {});
@@ -64,7 +93,7 @@ class _ContactsListState extends State<ContactsList> {
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => ContactForm(),
+              builder: (context) => ContactForm(Contact(0, "", 0)),
             ),
           ).then((value) => {
             setState(() {})
@@ -72,32 +101,6 @@ class _ContactsListState extends State<ContactsList> {
         },
         child: Icon(
           Icons.add,
-        ),
-      ),
-    );
-  }
-}
-
-class _ContactItem extends StatelessWidget {
-  final Contact contact;
-
-  _ContactItem(this.contact);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: ListTile(
-        title: Text(
-          contact.name,
-          style: TextStyle(
-            fontSize: 24.0,
-          ),
-        ),
-        subtitle: Text(
-          contact.accountNumber.toString(),
-          style: TextStyle(
-            fontSize: 16.0,
-          ),
         ),
       ),
     );

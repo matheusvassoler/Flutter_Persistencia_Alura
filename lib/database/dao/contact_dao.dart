@@ -58,9 +58,19 @@ class ContactDao {
 //  });
   }
 
+  Future<void> update(Contact contact) async {
+    final Database db = await getDatabase();
+    await db.update(
+      _tableName,
+      contact.topMap(),
+      where: "id = ?",
+      whereArgs: [contact.id],
+    );
+  }
+
   Future<void> delete(int id) async {
     final Database db = await getDatabase();
-    db.delete(
+    await db.delete(
       _tableName,
       where: "id = ?",
       whereArgs: [id]
